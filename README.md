@@ -1,5 +1,36 @@
-# Vue 3 + TypeScript + Vite
+# Mercy General Clinical Operations Dashboard
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Operational dashboard case study for a Clinical Operations Lead at a mid-size hospital. The app provides a one-screen morning readout for patient volume, occupancy, wait times, staffing, and active alerts.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Stack
+
+- Vue 3
+- TypeScript
+- Vite
+- Vue Router
+- Vuetify 3
+- Chart.js + vue-chartjs
+
+## Live URL
+
+- Pending Vercel deployment
+
+## Local Development
+
+1. Install dependencies:
+
+	```bash
+	npm install
+	```
+
+2. Start dev server:
+
+	```bash
+	npm run dev
+	```
+
+3. Build for production:
+
+	```bash
+	npm run build
+	```
