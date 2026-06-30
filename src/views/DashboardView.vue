@@ -300,98 +300,104 @@ const departmentFilterItems = computed(() => [
         <section class="content-section">
           <div class="content-grid">
             <div class="chart-panel">
-              <v-card class="panel-card pa-5">
-                <div class="panel-heading">
-                  <h2>Bed Occupancy Trend</h2>
-                  <span>Last 14 days</span>
+              <article class="panel-card">
+                <div class="panel-card-inner">
+                  <div class="panel-heading">
+                    <h2>Bed Occupancy Trend</h2>
+                    <span>Last 14 days</span>
+                  </div>
+                  <div class="chart-wrap">
+                    <Line :data="occupancyChartData" :options="occupancyChartOptions" />
+                  </div>
                 </div>
-                <div class="chart-wrap">
-                  <Line :data="occupancyChartData" :options="occupancyChartOptions" />
-                </div>
-              </v-card>
+              </article>
             </div>
 
             <div class="table-panel">
-              <v-card class="panel-card pa-5">
-                <div class="panel-heading">
-                  <h2>Department Performance</h2>
-                  <span>Today</span>
+              <article class="panel-card">
+                <div class="panel-card-inner">
+                  <div class="panel-heading">
+                    <h2>Department Performance</h2>
+                    <span>Today</span>
+                  </div>
+                  <v-table density="compact" class="dept-table">
+                    <thead>
+                      <tr>
+                        <th>Department</th>
+                        <th class="text-right">Volume</th>
+                        <th class="text-right">Occupancy</th>
+                        <th class="text-right">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="row in departmentRows" :key="row.id">
+                        <td>{{ row.name }}</td>
+                        <td class="text-right">{{ row.volume }}</td>
+                        <td class="text-right">{{ row.occupancyPct.toFixed(1) }}%</td>
+                        <td class="text-right">
+                          <v-chip
+                            :color="severityColor(row.severity)"
+                            class="status-chip"
+                            size="small"
+                            variant="flat"
+                            label
+                          >
+                            {{ row.severity }}
+                          </v-chip>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </v-table>
                 </div>
-                <v-table density="compact" class="dept-table">
-                  <thead>
-                    <tr>
-                      <th>Department</th>
-                      <th class="text-right">Volume</th>
-                      <th class="text-right">Occupancy</th>
-                      <th class="text-right">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="row in departmentRows" :key="row.id">
-                      <td>{{ row.name }}</td>
-                      <td class="text-right">{{ row.volume }}</td>
-                      <td class="text-right">{{ row.occupancyPct.toFixed(1) }}%</td>
-                      <td class="text-right">
-                        <v-chip
-                          :color="severityColor(row.severity)"
-                          class="status-chip"
-                          size="small"
-                          variant="flat"
-                          label
-                        >
-                          {{ row.severity }}
-                        </v-chip>
-                      </td>
-                    </tr>
-                  </tbody>
-                </v-table>
-              </v-card>
+              </article>
             </div>
           </div>
         </section>
 
         <section class="alerts-section">
-          <v-card class="panel-card pa-5">
-            <div class="panel-heading">
-              <h2>Active Alerts</h2>
-              <span>{{ filteredAlerts.length }} items</span>
+          <article class="panel-card">
+            <div class="panel-card-inner">
+              <div class="panel-heading">
+                <h2>Active Alerts</h2>
+                <span>{{ filteredAlerts.length }} items</span>
+              </div>
+              <div v-if="filteredAlerts.length === 0" class="empty-state">
+                <p>No active alerts for this department.</p>
+              </div>
+              <v-table v-else density="compact" class="alerts-table">
+                <thead>
+                  <tr>
+                    <th>Alert ID</th>
+                    <th>Date</th>
+                    <th>Department</th>
+                    <th>Type</th>
+                    <th>Details</th>
+                    <th class="text-right">Severity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="alert in filteredAlerts" :key="alert.id">
+                    <td><span class="id-chip">{{ alert.id }}</span></td>
+                    <td>{{ alert.date }}</td>
+                    <td>{{ departmentName(alert.departmentId) }}</td>
+                    <td>{{ alert.type }}</td>
+                    <td>{{ alert.message }}</td>
+                    <td class="text-right">
+                      <v-chip
+                        :color="severityColor(alert.severity)"
+                        class="status-chip"
+                        size="small"
+                        variant="flat"
+                        label
+                      >
+                        {{ alert.severity }}
+                      </v-chip>
+                    </td>
+                  </tr>
+                </tbody>
+              </v-table>
             </div>
-            <div v-if="filteredAlerts.length === 0" class="empty-state">
-              <p>No active alerts for this department.</p>
-            </div>
-            <v-table v-else density="compact" class="alerts-table">
-              <thead>
-                <tr>
-                  <th>Alert ID</th>
-                  <th>Date</th>
-                  <th>Department</th>
-                  <th>Type</th>
-                  <th>Details</th>
-                  <th class="text-right">Severity</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="alert in filteredAlerts" :key="alert.id">
-                  <td><span class="id-chip">{{ alert.id }}</span></td>
-                  <td>{{ alert.date }}</td>
-                  <td>{{ departmentName(alert.departmentId) }}</td>
-                  <td>{{ alert.type }}</td>
-                  <td>{{ alert.message }}</td>
-                  <td class="text-right">
-                    <v-chip
-                      :color="severityColor(alert.severity)"
-                      class="status-chip"
-                      size="small"
-                      variant="flat"
-                      label
-                    >
-                      {{ alert.severity }}
-                    </v-chip>
-                  </td>
-                </tr>
-              </tbody>
-            </v-table>
-          </v-card>
+          </article>
         </section>
 
         <footer class="institutional-footer">
@@ -561,9 +567,19 @@ const departmentFilterItems = computed(() => [
   background: #feffff;
   border: 1px solid #c2dedb;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(23, 37, 42, 0.05);
+  box-shadow: none;
   overflow: hidden;
   width: 100%;
+  height: 100%;
+}
+
+.panel-card-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 1.25rem;
 }
 
 .panel-heading {
@@ -601,6 +617,13 @@ const departmentFilterItems = computed(() => [
   text-transform: uppercase;
 }
 
+.dept-table,
+.alerts-table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
 .dept-table :deep(td),
 .alerts-table :deep(td) {
   color: #17252a;
@@ -615,11 +638,14 @@ const departmentFilterItems = computed(() => [
 .dept-table :deep(table),
 .alerts-table :deep(table) {
   background: #feffff;
+  width: 100%;
 }
 
 .dept-table :deep(.v-table__wrapper),
 .alerts-table :deep(.v-table__wrapper) {
   background: #feffff;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .status-chip {
