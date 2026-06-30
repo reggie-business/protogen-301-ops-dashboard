@@ -615,6 +615,8 @@ const departmentFilterItems = computed(() => [
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  padding: 12px 18px !important;
+  padding-bottom: 14px !important;
 }
 
 .dept-table,
@@ -627,12 +629,18 @@ const departmentFilterItems = computed(() => [
 .dept-table :deep(td),
 .alerts-table :deep(td) {
   color: #17252a;
-  border-bottom: 1px solid #d1e7e5;
+  border-bottom: 1px solid #E6EFEE;
+  padding: 15px 18px !important;
+  font-size: 0.9rem;
 }
 
 .dept-table :deep(tr:last-child td),
 .alerts-table :deep(tr:last-child td) {
   border-bottom: none;
+}
+
+.alerts-table :deep(td:last-child) {
+  padding-left: 24px !important;
 }
 
 .dept-table :deep(table),
